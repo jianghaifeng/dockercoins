@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    servicename: webui
+{{ include "dockercoins_prod.labels" . | indent 4 }}
+  name: webui
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  selector:
+    servicename: webui
+  type: ClusterIP

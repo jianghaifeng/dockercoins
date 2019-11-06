@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hasher
+spec:
+  template:
+    metadata:
+      labels:
+        servicename: hasher
+{{ include "dockercoins_prod.labels" . | indent 8 }}
+    spec:
+      containers:
+      - name: hasher
+        image: {{ .Values.image.registry }}/hasher:{{ .Values.image.version }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: PROJECT_NAME
+          value: dockercoins
+        - name: ENVIRONMENT
+          value: {{ .Release.Namespace }}
+        - name: SERVICE_NAME
+          value: hasher
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10

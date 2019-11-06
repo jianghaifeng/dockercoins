@@ -1,0 +1,21 @@
+{{- if ne .Values.serviceName "worker"}}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+{{ include "dockercoins.labels" . | indent 4 }}
+  name: {{ .Values.serviceName }}
+spec:
+  ports:
+  - protocol: TCP
+  {{- if eq .Values.serviceName "redis" }}
+    port: 6379
+    targetPort: 6379
+  {{- else }}
+    port: 80
+    targetPort: 80
+  {{- end }}
+  selector:
+    servicename: {{ .Values.serviceName }}
+  type: ClusterIP
+{{- end }}

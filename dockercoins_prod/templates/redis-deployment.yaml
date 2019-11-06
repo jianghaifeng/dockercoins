@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  template:
+    metadata:
+      labels:
+        servicename: redis
+{{ include "dockercoins_prod.labels" . | indent 8 }}
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: PROJECT_NAME
+          value: dockercoins
+        - name: ENVIRONMENT
+          value: {{ .Release.Namespace }}
+        - name: SERVICE_NAME
+          value: redis
+        readinessProbe:
+          exec:
+            command: ["redis-cli", "ping"]
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          exec:
+            command: ["redis-cli", "ping"]
+          initialDelaySeconds: 30
+          periodSeconds: 10

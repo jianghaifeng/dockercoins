@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webui
+spec:
+  template:
+    metadata:
+      labels:
+        servicename: webui
+{{ include "dockercoins_prod.labels" . | indent 8 }}
+    spec:
+      containers:
+      - name: webui
+        image: {{ .Values.image.registry }}/webui:{{ .Values.image.version }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: PROJECT_NAME
+          value: dockercoins
+        - name: ENVIRONMENT
+          value: {{ .Release.Namespace }}
+        - name: SERVICE_NAME
+          value: webui
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10

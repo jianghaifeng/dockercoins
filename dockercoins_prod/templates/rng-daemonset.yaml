@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: rng
+spec:
+  template:
+    metadata:
+      labels:
+        servicename: rng
+{{ include "dockercoins_prod.labels" . | indent 8 }}
+    spec:
+      containers:
+      - name: rng
+        image: {{ .Values.image.registry }}/rng:{{ .Values.image.version }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10

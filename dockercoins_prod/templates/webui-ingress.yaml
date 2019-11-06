@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    servicename: webui
+{{ include "dockercoins_prod.labels" . | indent 4 }}
+  name: webui-ingress
+spec:
+  rules:
+  - host: webui.192.168.33.101.nip.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: webui
+          servicePort: 80

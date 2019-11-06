@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  template:
+    metadata:
+      labels:
+        servicename: worker
+{{ include "dockercoins_prod.labels" . | indent 8 }}
+    spec:
+      containers:
+      - name: worker
+        image: {{ .Values.image.registry }}/worker:{{ .Values.image.version }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: PROJECT_NAME
+          value: dockercoins
+        - name: ENVIRONMENT
+          value: {{ .Release.Namespace }}
+        - name: SERVICE_NAME
+          value: worker

@@ -1,0 +1,23 @@
+{{- if and .Values.serviceName (eq .Values.serviceName "rng") }}
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: {{ .Values.serviceName }}
+spec:
+  template:
+    metadata:
+      labels:
+{{ include "dockercoins.labels" . | indent 8 }}
+    spec:
+      containers:
+      - name: {{ .Values.serviceName }}
+      {{- if (eq .Values.serviceName "redis") }}
+        image: redis
+      {{- else }}
+        image: {{ .Values.image.registry }}/{{ .Values.serviceName }}:{{ .Values.image.version }}
+      {{- end }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+      {{- if eq .Release.Namespace "uat" }}
+{{ toYaml .Values.rng.probes | indent 8 }}
+      {{- end }}
+{{- end }}

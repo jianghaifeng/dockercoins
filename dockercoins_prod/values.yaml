@@ -1,0 +1,8 @@
+# Default values for dockercoins_prod.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  registry: 127.0.0.1:31913
+  version: v0.1
+  pullPolicy: IfNotPresent
