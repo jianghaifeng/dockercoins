@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: worker
-        image: {{ .Values.image.registry }}/worker:{{ .Values.image.version }}
+        image: {{ .Values.image.registry }}/worker:{{ .Values.worker.version }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: PROJECT_NAME

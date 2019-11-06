@@ -4,5 +4,13 @@
 
 image:
   registry: 127.0.0.1:31913
-  version: v0.1
   pullPolicy: IfNotPresent
+
+rng:
+  version: v0.1
+worker:
+  version: v0.1
+hasher:
+  version: v0.1
+webui:
+  version: v0.2

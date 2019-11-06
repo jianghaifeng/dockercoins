@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: rng
-        image: {{ .Values.image.registry }}/rng:{{ .Values.image.version }}
+        image: {{ .Values.image.registry }}/rng:{{ .Values.rng.version }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         readinessProbe:
           httpGet:

@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: hasher
-        image: {{ .Values.image.registry }}/hasher:{{ .Values.image.version }}
+        image: {{ .Values.image.registry }}/hasher:{{ .Values.hasher.version }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: PROJECT_NAME

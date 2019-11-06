@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: webui
-        image: {{ .Values.image.registry }}/webui:{{ .Values.image.version }}
+        image: {{ .Values.image.registry }}/webui:{{ .Values.webui.version }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: PROJECT_NAME
