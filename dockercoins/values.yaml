@@ -23,6 +23,20 @@ redis:
       initialDelaySeconds: 30
       periodSeconds: 10
 
+worker:
+  probes:
+    readinessProbe:
+      exec:
+        command: ["ps", "| awk '$1==1' | grep 'python worker.py'"]
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      failureThreshold: 3
+    livenessProbe:
+      exec:
+        command: ["ps", "| awk '$1==1' | grep 'python worker.py'"]
+      initialDelaySeconds: 30
+      periodSeconds: 10
+
 rng:
   probes:
     readinessProbe:

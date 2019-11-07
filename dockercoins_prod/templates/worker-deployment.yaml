@@ -20,3 +20,14 @@ spec:
           value: {{ .Release.Namespace }}
         - name: SERVICE_NAME
           value: worker
+        readinessProbe:
+          exec:
+            command: ["ps", "| awk '$1==1' | grep 'python worker.py'"]
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          exec:
+            command: ["ps", "| awk '$1==1' | grep 'python worker.py'"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
